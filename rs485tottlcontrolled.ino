@@ -136,4 +136,29 @@ void processCommand(String command)
   }
 }
 
+// this is the python code jisse mai apne arduino ko serially control karunga rs485tousb ke through. mera rs485tousb com6 se connect hai.
+import serial
+import time
+serial_port = 'COM6'
+baud_rate = 9600
+ser = serial.Serial(serial_port, baud_rate, timeout=1)
+def send_command(command):
+    ser.write(command.encode())
+
+time.sleep(2)
+try:
+    while True:
+        print("Sending command: ON")
+        send_command("ON\n")    
+        time.sleep(2)
+        print("Sending command: OFF")
+        send_command("OFF\n")
+        time.sleep(2)
+
+except KeyboardInterrupt:
+    ser.close()
+
+
+
+
 
