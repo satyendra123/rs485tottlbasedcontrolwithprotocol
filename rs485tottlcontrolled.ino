@@ -85,7 +85,7 @@ void processCommand(char command) {
   }
 }
 */
-//EXAMPLE-3 when i send the command from the hercules serial ON then the LED is on and when i send the command OFF then led is OFF
+//EXAMPLE-3 when i send the command from the hercules serial ON then the LED is on and when i send the command OFF then led is OFF. i have used the rs485tottl module and connect this with the rs485tousb. and send the data from hercules software. i have not connected anywhere arduino usb cable.
 #include <SoftwareSerial.h>
 
 // Define GPIO Pins
