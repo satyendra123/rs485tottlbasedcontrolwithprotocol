@@ -159,6 +159,88 @@ except KeyboardInterrupt:
     ser.close()
 
 
+// the same thing i will do using the esp32 module
+      // Define GPIO Pins
+const byte RX_PIN = 16; // Any GPIO pin can be used
+const byte TX_PIN = 17; // Any GPIO pin can be used
+const byte LED_PIN = 2; // Built-in LED pin on most ESP32 boards
 
+String receivedString = ""; // Variable to store the received string
+
+void setup() {
+  Serial.begin(9600); // Initialize Serial Monitor
+  Serial1.begin(9600, SERIAL_8N1, RX_PIN, TX_PIN); // Initialize Hardware Serial1 for communication with Hercules
+  
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW); // Initially turn off the LED
+
+  Serial.println("\n\nWelcome to JP Learning\n");
+  Serial.println("Receiver Start\n");
+
+  Serial.print("Initial LED state: ");
+  Serial.println(digitalRead(LED_PIN) == HIGH ? "ON" : "OFF");
+}
+
+void loop() {
+  if (Serial1.available() > 0) {
+    receivedString = Serial1.readStringUntil('\n');
+    processCommand(receivedString);
+  }
+}
+
+void processCommand(String command) {
+  command.trim();
+  if (command.equals("ON")) {
+    digitalWrite(LED_PIN, HIGH); // Turn on the LED
+    Serial.println("\nLED is on");
+  }
+  else if (command.equals("OFF")) 
+  {
+    digitalWrite(LED_PIN, LOW); // Turn off the LED
+    Serial.println("\nLED is off");
+  }
+  else 
+  {
+    Serial.println("\nInvalid command received: " + command); // Print an error message for invalid commands
+  }
+}
+Note- connect the rx and tx pin of rs485tottl module pin 16 and 17.
+// this is my micropython code for rs485tottl module
+  from machine import Pin, UART
+import time
+
+# Define GPIO Pins
+RX_PIN = 16  # Any GPIO pin can be used
+TX_PIN = 17  # Any GPIO pin can be used
+LED_PIN = 2  # Built-in LED pin on most ESP32 boards
+
+# Initialize UART
+uart = UART(1, baudrate=9600, tx=TX_PIN, rx=RX_PIN)
+
+# Define function to process received command
+def process_command(command):
+    command = command.strip()
+    if command == b'ON':
+        led.value(1)  # Turn on the LED
+        print("LED is on")
+    elif command == b'OFF':
+        led.value(0)  # Turn off the LED
+        print("LED is off")
+    else:
+        print("Invalid command received:", command)
+
+# Initialize LED pin
+led = Pin(LED_PIN, Pin.OUT)
+led.value(0)  # Initially turn off the LED
+
+print("\n\nWelcome to JP Learning\n")
+print("Receiver Start\n")
+
+# Main loop
+while True:
+    if uart.any():
+        received_data = uart.readline()
+        process_command(received_data)
+    time.sleep(0.1)
 
 
