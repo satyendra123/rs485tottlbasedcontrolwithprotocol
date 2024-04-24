@@ -91,7 +91,7 @@ void processCommand(char command) {
 // Define GPIO Pins
 const byte RX_PIN = 7;
 const byte TX_PIN = 8;
-const byte LED_PIN = 13;
+const byte LED_PIN = 10;
 
 SoftwareSerial Soft_Serial(RX_PIN, TX_PIN);
 
