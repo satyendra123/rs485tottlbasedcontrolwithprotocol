@@ -102,7 +102,7 @@ void setup() {
   Soft_Serial.begin(9600); // Initialize Software Serial for communication with Hercules
   
   pinMode(LED_PIN, OUTPUT);
-  digitalWrite(LED_PIN, LOW); // Initially turn off the LED
+  digitalWrite(LED_PIN, HIGH); // Initially turn off the LED
 
   Serial.println("\n\nWelcome to JP Learning\n");
   Serial.println("Receiver Start\n");
@@ -122,13 +122,17 @@ void processCommand(String command)
 {
   command.trim();
   if (command.equals("ON")) {
-    digitalWrite(LED_PIN, HIGH); // Turn on the LED
+    digitalWrite(LED_PIN, LOW); // Turn on the LED
+    delay(1000);
+    digitalWrite(LED_PIN, HIGH);
     Serial.println("\nLED is on");
+    Soft_Serial.write("\nBARRIER IS OPEN");
   }
   else if (command.equals("OFF")) 
   {
-    digitalWrite(LED_PIN, LOW); // Turn off the LED
+    //digitalWrite(LED_PIN, LOW); // Turn off the LED
     Serial.println("\nLED is off");
+    Soft_Serial.write("\nLED is off");
   }
   else 
   {
